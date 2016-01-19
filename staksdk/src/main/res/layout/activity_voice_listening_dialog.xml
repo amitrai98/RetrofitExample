@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent"
+
+                android:background="@color/transparent"
+    >
+
+    <!--android:background="#AA000000"-->
+    <RelativeLayout
+        android:background="@color/mic_bg"
+        android:layout_width="match_parent"
+        android:id="@+id/micLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_height="78dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speak_command"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <ImageView
+
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mic_image_blue"
+                android:clickable="true"
+                android:background="@color/mic_elevations_color"
+                android:padding="2dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:id="@+id/mic_image_blue"
+
+                android:visibility="visible"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imRecordImageView"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:src="@drawable/record"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_stop_listening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_action_cancel"/>
+
+    </RelativeLayout>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imCloseButton"
+        android:background="@null"
+
+        android:onClick="onClick"
+        android:layout_above="@+id/micLayout"
+        android:layout_toRightOf="@+id/micLayout"
+        android:src="@drawable/ic_action_remove"
+
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/layout_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/micLayout">
+
+    </RelativeLayout>
+</RelativeLayout>

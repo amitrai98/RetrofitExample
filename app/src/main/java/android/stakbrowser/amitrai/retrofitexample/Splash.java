@@ -1,8 +1,12 @@
 package android.stakbrowser.amitrai.retrofitexample;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.demo.amitrai.staksdk.StakConstants.StakConstants;
+import android.demo.amitrai.staksdk.StakSearch;
+import android.demo.amitrai.staksdk.StakUtil.AddMic;
 import android.os.Bundle;
-import android.stakbrowser.amitrai.retrofitexample.RetrofiltCode.DataModal;
-import android.stakbrowser.amitrai.retrofitexample.RetrofiltCode.StakJsonRequester;
+import android.stakbrowser.amitrai.retrofitexample.Modal.DataModal;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +26,8 @@ public class Splash extends AppCompatActivity {
     private EditText edt_query = null;
     private Button btn_search = null;
 
+    public static Activity act = null;
+
     protected final String TAG = getClass().getSimpleName();
 
     @Override
@@ -29,14 +35,18 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        act = this;
         initWebView();
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        act = null;
+    }
 
-
-
-        private Callback<DataModal> callback = new Callback<DataModal>() {
+    private Callback<DataModal> callback = new Callback<DataModal>() {
             @Override
             public void onResponse(Response<DataModal> response, Retrofit retrofit) {
                 Log.d(TAG, "" + response);
@@ -84,15 +94,32 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String search_query = edt_query.getText().toString().trim();
-                if (search_query.length() > 0){
-//                    StakSearch.search(search_query, Splash.this, webView);
-                    new StakJsonRequester(Splash.this, search_query);
+                if (search_query.length() > 0) {
+                    StakSearch.search(search_query, Splash.this, webView);
+//                    new StakJsonRequester(Splash.this, search_query);
                 }
             }
         });
 
 
+        AddMic.addMic(act, webView);
+
 //        webView.loadUrl("http://www.google.co.in");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == StakConstants.VOICE_LISTENING_REQUEST_CODE) {
+
+            if (data != null) {
+                String searchQuery = data.getStringExtra("query");
+                if (searchQuery != null) {
+                    searchQuery = searchQuery.toLowerCase();
+                    StakSearch.search(searchQuery, this, webView);
+                }
+            }
+        }
     }
 
 
