@@ -6,6 +6,7 @@
     <color name="mic_bg">#29ABE2</color>
     <color name="mic_elevations_color">#22ABE2</color>
     <color name="transparent">#00000000</color>
+    <color name="semitransparent">#11000000</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
 

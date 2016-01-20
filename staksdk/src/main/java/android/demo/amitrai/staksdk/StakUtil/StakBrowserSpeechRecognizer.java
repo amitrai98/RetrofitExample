@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * 4.Null is passed as parameter if no text is read or in case of error.
  */
 public class StakBrowserSpeechRecognizer implements RecognitionListener {
-    private static StakBrowserSpeechRecognizer stakBrowserSpeechRecognizer =null;
+    public static StakBrowserSpeechRecognizer stakBrowserSpeechRecognizer =null;
     private SpeechListener speechListener=null;
     private Intent speechIntent=null;
 
@@ -110,7 +110,7 @@ public class StakBrowserSpeechRecognizer implements RecognitionListener {
     @Override
     public void onError(int i) {
         StakLogger.log("StakBrowser Speech Error", i + "");
-        getErrorText(i);
+        String txt = getErrorText(i);
         if(i == 7 ){
             if(error_time <5){
                 startSpeechEngine();
@@ -197,6 +197,8 @@ public class StakBrowserSpeechRecognizer implements RecognitionListener {
         }
         return message;
     }
+
+
 
 
 }

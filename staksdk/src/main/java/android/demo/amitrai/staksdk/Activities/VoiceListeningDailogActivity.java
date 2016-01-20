@@ -68,6 +68,8 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(StakBrowserSpeechRecognizer.stakBrowserSpeechRecognizer != null)
+            StakBrowserSpeechRecognizer.stakBrowserSpeechRecognizer.destroy();
 //        AppConstants.AUTO_LISTENING = true;
 //
 //        if(stakBrowserSpeechRecognizer !=null){

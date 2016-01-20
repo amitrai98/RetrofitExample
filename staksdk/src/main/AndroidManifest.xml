@@ -1,13 +1,17 @@
 <manifest package="android.demo.amitrai.staksdk"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application android:allowBackup="true"
                  android:icon="@mipmap/ic_launcher"
                  android:label="@string/app_name"
                  android:supportsRtl="true"
                  android:theme="@style/AppTheme">
 
-        <activity android:name=".Activities.VoiceListeningDailogActivity"/>
+        <activity android:name=".Activities.VoiceListeningDailogActivity"
+            android:theme="@style/VoiceDialogTheme"/>
 
     </application>
 
