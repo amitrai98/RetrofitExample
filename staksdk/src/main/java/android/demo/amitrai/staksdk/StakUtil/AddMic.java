@@ -27,7 +27,7 @@ public class AddMic{
 
 
 
-    public static void addMic(final Activity context , final WebView webView){
+    public static void addMic(View view, final Activity context , final WebView webView){
         activity = context;
          windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
 
@@ -58,6 +58,8 @@ public class AddMic{
                 context.startActivityForResult(i, StakConstants.VOICE_LISTENING_REQUEST_CODE);
             }
         });
+
+//        view.addChildrenForAccessibility(chatHead);
 
          windowManager.addView(chatHead, params);
      }

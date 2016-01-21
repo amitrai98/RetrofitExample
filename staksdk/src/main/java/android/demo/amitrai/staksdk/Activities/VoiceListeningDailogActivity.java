@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.demo.amitrai.staksdk.Interfaces.SpeechListener;
 import android.demo.amitrai.staksdk.R;
-import android.demo.amitrai.staksdk.StakUtil.AddMic;
 import android.demo.amitrai.staksdk.StakUtil.NetworkConnection;
 import android.demo.amitrai.staksdk.StakUtil.StakBrowserSpeechRecognizer;
 import android.demo.amitrai.staksdk.StakUtil.StakLogger;
@@ -56,7 +55,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
 
         act = this;
         //Initializing the StakBrowserSpeechRecognizer
-        stakBrowserSpeechRecognizer = StakBrowserSpeechRecognizer.getInstance(AddMic.activity);
+        stakBrowserSpeechRecognizer = StakBrowserSpeechRecognizer.getInstance(act);
         //Setting the stakBrowserSpeechRecognizer SpeechListener to this
         stakBrowserSpeechRecognizer.setSpeechListener(this);
         initId();
@@ -76,11 +75,14 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
 //            stakBrowserSpeechRecognizer.destroy();
 //        }
 
-        act = null;
     }
 
     @Override
     public void finish() {
+        if(StakBrowserSpeechRecognizer.stakBrowserSpeechRecognizer != null)
+            StakBrowserSpeechRecognizer.stakBrowserSpeechRecognizer.destroy();
+
+        StakBrowserSpeechRecognizer.stakBrowserSpeechRecognizer = null;
         super.finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_down);
     }
@@ -167,7 +169,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
     }
     /**
      * Function to stop Voice listening if Speech Recognition is working. T
-     * his method will also stop the Mic animation.
+     * his method will also stop the Mic animation.`
      */
     private void stopVoiceListeningIfEnabled(){
         enableAnimation(false);

@@ -1,9 +1,11 @@
-package android.stakbrowser.amitrai.retrofitexample.Backend;
+package android.demo.amitrai.staksdk.Backend;
 
 import android.content.Context;
-import android.stakbrowser.amitrai.retrofitexample.Modal.DataModal;
-import android.stakbrowser.amitrai.retrofitexample.Utils.AppConstants;
+import android.demo.amitrai.staksdk.Interfaces.StakListener;
+import android.demo.amitrai.staksdk.StakUtil.AppConstants;
 import android.util.Log;
+
+import org.json.JSONObject;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -14,10 +16,12 @@ import retrofit.Retrofit;
 /**
  * Created by amitrai on 18/1/16.
  */
-public class StakJsonRequester implements Callback<DataModal> {
+public class StakJsonRequester implements Callback<JSONObject> {
 
-    public StakJsonRequester(Context context, String query){
+    private StakListener listener = null;
 
+    public StakJsonRequester(Context context, String query, StakListener listener){
+        this.listener = listener;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppConstants.BASE_STAK_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -26,23 +30,26 @@ public class StakJsonRequester implements Callback<DataModal> {
         // prepare call in Retrofit 2.0
         StakBrowserApi stakAPI = retrofit.create(StakBrowserApi.class);
 
-        Call<DataModal> call = stakAPI.loadData(query);
+        Call<JSONObject> call = stakAPI.loadData(query);
         //asynchronous call
         call.enqueue(this);
 
     }
 
     @Override
-    public void onResponse(Response<DataModal> response, Retrofit retrofit) {
+    public void onResponse(Response<JSONObject> response, Retrofit retrofit) {
         if(response != null){
+            JSONObject jrsopnse = response.body();
             String respo = response.toString();
-            DataModal body = response.body();
-            Log.e("data receive3d", ""+body);
+//            DataModal body = response.body();
+//            Log.e("data receive3d", ""+body);
+            listener.onJsonReceived(jrsopnse);
         }
     }
 
     @Override
     public void onFailure(Throwable t) {
         Log.e("error", "error");
+        listener.onJsonReceived(null);
     }
 }
