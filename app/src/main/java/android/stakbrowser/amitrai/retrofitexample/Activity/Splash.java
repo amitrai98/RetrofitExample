@@ -1,4 +1,4 @@
-package android.stakbrowser.amitrai.retrofitexample;
+package android.stakbrowser.amitrai.retrofitexample.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.demo.amitrai.staksdk.Interfaces.StakListener;
 import android.demo.amitrai.staksdk.StakSearch;
 import android.os.Bundle;
 import android.stakbrowser.amitrai.retrofitexample.Modal.DataModal;
+import android.stakbrowser.amitrai.retrofitexample.R;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -122,6 +123,7 @@ public class Splash extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.e(TAG, "on activity result");
+
 //        if (requestCode == StakConstants.VOICE_LISTENING_REQUEST_CODE) {
 //
 //            if (data != null) {

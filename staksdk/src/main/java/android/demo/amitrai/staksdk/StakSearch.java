@@ -80,7 +80,7 @@ public class StakSearch implements VoiceListener, SpeechListener{
         else {
             try{
                 // todo make api request
-
+                Log.e(TAG, ""+searchQuery);
                 new StakJsonRequester(activity, searchQuery, stakListener);
 
 

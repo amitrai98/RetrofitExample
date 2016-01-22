@@ -30,12 +30,10 @@ public class VoiceResultHandler extends Activity{
                 if (searchQuery != null) {
                     searchQuery = searchQuery.toLowerCase();
                     StakSearch.speechListener.onVoiceResult(searchQuery);
-                    onDestroy();
                 }
-            }else
-                onDestroy();
-        }else
-             onDestroy();
+            }
+        }
+        finish();
 
 
     }
