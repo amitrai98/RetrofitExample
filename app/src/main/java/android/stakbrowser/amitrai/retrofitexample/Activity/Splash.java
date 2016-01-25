@@ -43,6 +43,11 @@ public class Splash extends AppCompatActivity{
             public void onJsonReceived(KitagList resonse) {
                 Log.e(TAG, ""+resonse);
             }
+
+            @Override
+            public void onFailure(String message) {
+                Log.e(TAG, ""+message);
+            }
         });
 
         initWebView();

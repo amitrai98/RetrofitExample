@@ -8,6 +8,7 @@ import android.demo.amitrai.staksdk.Backend.KitagList;
 public interface StakListener {
 
     public void onJsonReceived(KitagList jsonobject_response);
+    public void onFailure(String message);
 
 }
 

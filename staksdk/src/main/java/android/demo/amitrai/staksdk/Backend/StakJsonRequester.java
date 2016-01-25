@@ -50,6 +50,6 @@ public class StakJsonRequester implements Callback<KitagList> {
     @Override
     public void onFailure(Throwable t) {
         Log.e("error", "error");
-        listener.onJsonReceived(null);
+        listener.onFailure(""+t.getMessage());
     }
 }
