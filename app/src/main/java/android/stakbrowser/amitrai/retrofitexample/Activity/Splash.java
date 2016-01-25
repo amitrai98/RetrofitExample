@@ -2,6 +2,7 @@ package android.stakbrowser.amitrai.retrofitexample.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.demo.amitrai.staksdk.Backend.KitagList;
 import android.demo.amitrai.staksdk.Interfaces.StakListener;
 import android.demo.amitrai.staksdk.StakSearch;
 import android.os.Bundle;
@@ -14,8 +15,6 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
-
-import org.json.JSONObject;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -41,7 +40,7 @@ public class Splash extends AppCompatActivity{
 
         StakSearch search = new StakSearch(this, new StakListener() {
             @Override
-            public void onJsonReceived(JSONObject resonse) {
+            public void onJsonReceived(KitagList resonse) {
                 Log.e(TAG, ""+resonse);
             }
         });

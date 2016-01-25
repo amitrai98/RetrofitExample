@@ -5,8 +5,6 @@ import android.demo.amitrai.staksdk.Interfaces.StakListener;
 import android.demo.amitrai.staksdk.StakUtil.AppConstants;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -16,9 +14,10 @@ import retrofit.Retrofit;
 /**
  * Created by amitrai on 18/1/16.
  */
-public class StakJsonRequester implements Callback<JSONObject> {
+public class StakJsonRequester implements Callback<KitagList> {
 
     private StakListener listener = null;
+    private final String TAG = getClass().getSimpleName();
 
     public StakJsonRequester(Context context, String query, StakListener listener){
         this.listener = listener;
@@ -30,20 +29,21 @@ public class StakJsonRequester implements Callback<JSONObject> {
         // prepare call in Retrofit 2.0
         StakBrowserApi stakAPI = retrofit.create(StakBrowserApi.class);
 
-        Call<JSONObject> call = stakAPI.loadData(query);
+        Call<KitagList> call = stakAPI.loadData(query);
         //asynchronous call
         call.enqueue(this);
 
     }
 
     @Override
-    public void onResponse(Response<JSONObject> response, Retrofit retrofit) {
+    public void onResponse(Response<KitagList> response, Retrofit retrofit) {
         if(response != null){
-            JSONObject jrsopnse = response.body();
-            String respo = response.toString();
+//            JSONObject jrsopnse = response.body();
+                KitagList respo = response.body();
 //            DataModal body = response.body();
 //            Log.e("data receive3d", ""+body);
-            listener.onJsonReceived(jrsopnse);
+            listener.onJsonReceived(respo);
+//            Log.e(TAG, ""+respo);
         }
     }
 
