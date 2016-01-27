@@ -10,4 +10,8 @@ import java.util.List;
  */
 public class KitagList {
     List<KiTAG> kiTAGS;
+
+    public List<KiTAG> getKiTAGS() {
+        return kiTAGS;
+    }
 }

@@ -42,7 +42,7 @@ public class StakJsonRequester implements Callback<KitagList> {
                 KitagList respo = response.body();
 //            DataModal body = response.body();
 //            Log.e("data receive3d", ""+body);
-            listener.onJsonReceived(respo);
+            listener.onJsonReceived(respo.getKiTAGS());
 //            Log.e(TAG, ""+respo);
         }
     }

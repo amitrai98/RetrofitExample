@@ -2,19 +2,25 @@ package android.stakbrowser.amitrai.retrofitexample.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.demo.amitrai.staksdk.Backend.KitagList;
 import android.demo.amitrai.staksdk.Interfaces.StakListener;
+import android.demo.amitrai.staksdk.Modal.KiTAG;
 import android.demo.amitrai.staksdk.StakSearch;
 import android.os.Bundle;
+import android.stakbrowser.amitrai.retrofitexample.Adapters.JsonResultAdapter;
 import android.stakbrowser.amitrai.retrofitexample.Modal.DataModal;
 import android.stakbrowser.amitrai.retrofitexample.R;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -30,6 +36,10 @@ public class Splash extends AppCompatActivity{
 
     protected final String TAG = getClass().getSimpleName();
 
+    private JsonResultAdapter adapter = null;
+
+    private RecyclerView recycle_result_list = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +50,17 @@ public class Splash extends AppCompatActivity{
 
         StakSearch search = new StakSearch(this, new StakListener() {
             @Override
-            public void onJsonReceived(KitagList resonse) {
+            public void onJsonReceived(List<KiTAG> resonse) {
                 Log.e(TAG, ""+resonse);
+                if(resonse != null){
+                    adapter = new JsonResultAdapter(Splash.this, resonse);
+                    recycle_result_list.setAdapter(adapter);
+                    webView.setVisibility(View.GONE);
+                    recycle_result_list.setVisibility(View.VISIBLE);
+                    recycle_result_list.setLayoutManager(new LinearLayoutManager(Splash.this));
+                    if(resonse.size() >0 && resonse.get(0).getSearchString() != null)
+                        edt_query.setText(resonse.get(0).getSearchString());
+                }
             }
 
             @Override
@@ -65,6 +84,8 @@ public class Splash extends AppCompatActivity{
             @Override
             public void onResponse(Response<DataModal> response, Retrofit retrofit) {
                 Log.d(TAG, "" + response);
+
+
             }
 
             @Override
@@ -103,6 +124,7 @@ public class Splash extends AppCompatActivity{
         webView = (WebView) findViewById(R.id.web_view);
         edt_query = (EditText) findViewById(R.id.edt_query);
         btn_search = (Button) findViewById(R.id.btn_search);
+        recycle_result_list = (RecyclerView) findViewById(R.id.recycle_result_list);
 
 
 //        btn_search.setOnClickListener(new View.OnClickListener() {

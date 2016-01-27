@@ -49,6 +49,10 @@ public class KiTAG {
     @Expose
     private Object kiTAGViewId;
 
+    @SerializedName("searchString")
+    @Expose
+    private String searchString;
+
     /**
      * 
      * @return
@@ -238,11 +242,20 @@ public class KiTAG {
         return objects;
     }
 
+    public String getSearchString() {
+        return searchString;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
+    }
+
     /**
      * 
      * @param objects
      *     The objects
      */
+
     public void setObjects(Objects objects) {
         this.objects = objects;
     }
