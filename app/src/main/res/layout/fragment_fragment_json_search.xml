@@ -1,13 +1,49 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="android.stakbrowser.amitrai.retrofitexample.Fragments.FragmentJsonSearch">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="android.stakbrowser.amitrai.retrofitexample.Fragments.FragmentWebSearch">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/layout_searchtools"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_query"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:layout_weight=".7"/>
+
+        <android.demo.amitrai.staksdk.StakUtil.StakMicButton
+            android:id="@+id/btn_search"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/layout_searchtools"
+        android:id="@+id/recycle_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:visibility="gone"/>
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:visibility="gone"/>
+
+
+
+</RelativeLayout>

@@ -1,14 +1,25 @@
 package android.stakbrowser.amitrai.retrofitexample.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.demo.amitrai.staksdk.Interfaces.StakListener;
+import android.demo.amitrai.staksdk.Modal.KiTAG;
+import android.demo.amitrai.staksdk.StakSearch;
 import android.net.Uri;
 import android.os.Bundle;
+import android.stakbrowser.amitrai.retrofitexample.Adapters.JsonResultAdapter;
+import android.stakbrowser.amitrai.retrofitexample.R;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
-import android.stakbrowser.amitrai.retrofitexample.R;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +39,18 @@ public class FragmentJsonSearch extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Activity context = null;
+
     private OnFragmentInteractionListener mListener;
+
+    protected final String TAG = getClass().getSimpleName();
+
+    private JsonResultAdapter adapter = null;
+
+    private RecyclerView recycle_result_list = null;
+    private ProgressBar progress = null;
+    private EditText edt_query = null;
+
 
     public FragmentJsonSearch() {
         // Required empty public constructor
@@ -65,7 +87,11 @@ public class FragmentJsonSearch extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_json_search, container, false);
+        context = getActivity();
+        View view =inflater.inflate(R.layout.fragment_fragment_json_search, container, false);
+        initview(view);
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,4 +132,51 @@ public class FragmentJsonSearch extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    private void initview(View view){
+        recycle_result_list = (RecyclerView) view.findViewById(R.id.recycle_result_list);
+        progress = (ProgressBar) view.findViewById(R.id.progress);
+        edt_query = (EditText) view.findViewById(R.id.edt_query);
+        setJsonListener();
+
+    }
+
+    private void setJsonListener(){
+        StakSearch search = new StakSearch(context, new StakListener() {
+            @Override
+            public void onJsonReceived(List<KiTAG> resonse) {
+                Log.e(TAG, "" + resonse);
+                if(resonse != null){
+                    adapter = new JsonResultAdapter(context, resonse);
+                    recycle_result_list.setAdapter(adapter);
+                    progress.setVisibility(View.GONE);
+                    recycle_result_list.setVisibility(View.VISIBLE);
+                    recycle_result_list.setLayoutManager(new LinearLayoutManager(context));
+                    if(resonse.size() >0 && resonse.get(0).getSearchString() != null)
+                        edt_query.setText(resonse.get(0).getSearchString());
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.e(TAG, ""+message);
+            }
+
+            @Override
+            public void onListeningStart() {
+                progress.setVisibility(View.VISIBLE);
+
+                Log.e(TAG, "progress start");
+            }
+
+            @Override
+            public void onVoiceDataReceived(String query) {
+                edt_query.setText(query);
+            }
+        });
+
+    }
+
+
 }

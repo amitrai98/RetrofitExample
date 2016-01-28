@@ -55,8 +55,23 @@ public class JsonResultAdapter extends RecyclerView.Adapter<JsonResultAdapter.Js
                 result_text += "id ="+ modal.getId()+"\n";
             if(modal.getKiTAG() != null)
                 result_text += "key tag ="+ modal.getKiTAG() +"\n";
-            if(modal.getObjects() != null)
-                result_text += "business id ="+ modal.getObjects()+"\n";
+            if(modal.getObjects() != null ){
+                if(modal.getObjects().getCallTagDescription() != null )
+                    result_text += "call discription="+ modal.getObjects().getCallTagDescription()+"\n";
+                if(modal.getObjects().getCountryOnCallCard() != null )
+                    result_text += "call coutnry on call card="+ modal.getObjects().getCountryOnCallCard() +"\n";
+                if(modal.getObjects().getPhoneNumber() != null )
+                    result_text += "phone no="+ modal.getObjects().getPhoneNumber()+"\n";
+                if(modal.getObjects().getUrl() != null )
+                    result_text += "url ="+ modal.getObjects().getUrl()+"\n";
+                if(modal.getObjects().getUrlImage() != null )
+                    result_text += "url image ="+ modal.getObjects().getUrlImage()+"\n";
+                if(modal.getObjects().getUrlTagDescription() != null )
+                    result_text += "url tag discription ="+ modal.getObjects().getUrlTagDescription()+"\n";
+            }
+
+            if(modal.getNotes() != null && modal.getNotes().length()>0)
+                result_text += "notes ="+ modal.getNotes() +"\n";
 
             holder.txt_result.setText(""+result_text);
 

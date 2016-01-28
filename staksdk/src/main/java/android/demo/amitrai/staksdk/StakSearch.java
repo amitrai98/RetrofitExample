@@ -7,6 +7,7 @@ import android.demo.amitrai.staksdk.Activities.VoiceResultHandler;
 import android.demo.amitrai.staksdk.Backend.StakJsonRequester;
 import android.demo.amitrai.staksdk.Interfaces.SpeechListener;
 import android.demo.amitrai.staksdk.Interfaces.StakListener;
+import android.demo.amitrai.staksdk.Interfaces.StakWeblistener;
 import android.demo.amitrai.staksdk.Interfaces.VoiceListener;
 import android.demo.amitrai.staksdk.StakConstants.AnalyticsUrlManager;
 import android.demo.amitrai.staksdk.StakConstants.StakConstants;
@@ -46,6 +47,7 @@ public class StakSearch implements VoiceListener, SpeechListener{
     public static SpeechListener speechListener = null;
     private static StakListener stakListener = null;
     private  final String TAG = StakSearch.class.getSimpleName();
+    private StakWeblistener webListener = null;
 
     public StakSearch(Activity activity, StakListener stakListener){
         listener = this;
@@ -54,7 +56,11 @@ public class StakSearch implements VoiceListener, SpeechListener{
         this.activity = activity;
     }
 
-    public  void search(String searchQuery, Context context, WebView webView){
+    public StakSearch(StakWeblistener webListener){
+        this.webListener = webListener;
+    }
+
+    public void search(String searchQuery, Context context, WebView webView){
 
         if(searchQuery == null || searchQuery.trim().length() == 0 || context == null || webView == null)
             return;
@@ -81,6 +87,7 @@ public class StakSearch implements VoiceListener, SpeechListener{
             try{
                 // todo make api request
                 Log.e(TAG, ""+searchQuery);
+                stakListener.onListeningStart();
                 new StakJsonRequester(activity, searchQuery, stakListener);
 
 
@@ -176,6 +183,8 @@ public class StakSearch implements VoiceListener, SpeechListener{
      */
     private void startLoading(WebView webview) {
         webview.setVisibility(View.INVISIBLE);
+        if(webListener != null)
+            webListener.onProgresStarted();
     }
 
     /**
@@ -185,7 +194,10 @@ public class StakSearch implements VoiceListener, SpeechListener{
         if (Build.VERSION.SDK_INT != Build.VERSION_CODES.KITKAT) {
 //            webview.startAnimation(mSlideUpAnimation);
         }
+        if(webListener != null)
+            webListener.onProgressFinished();
         webview.setVisibility(WebView.VISIBLE);
+
     }
 
 
@@ -230,6 +242,7 @@ public class StakSearch implements VoiceListener, SpeechListener{
     @Override
     public void onVoiceResult(String query) {
         if(query != null && query.trim().length() >0){
+            stakListener.onVoiceDataReceived(query);
             search(query);
         }
     }

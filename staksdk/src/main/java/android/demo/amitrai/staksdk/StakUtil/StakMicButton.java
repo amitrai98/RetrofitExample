@@ -12,28 +12,28 @@ import android.widget.Button;
 /**
  * Created by amitrai on 20/1/16.
  */
-public class stakmicbutton extends Button implements View.OnClickListener{
+public class StakMicButton extends Button implements View.OnClickListener{
 
     private final String TAG = getClass().getSimpleName();
 
     StakListener listener ;
 
-    public stakmicbutton(Context context) {
+    public StakMicButton(Context context) {
         super(context);
         setOnClickListener(this);
     }
 
-    public stakmicbutton(Context context, AttributeSet attrs) {
+    public StakMicButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnClickListener(this);
     }
 
-    public stakmicbutton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StakMicButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOnClickListener(this);
     }
 
-    public stakmicbutton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public StakMicButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setOnClickListener(this);
     }

@@ -1,11 +1,13 @@
 package android.stakbrowser.amitrai.retrofitexample.Activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.demo.amitrai.staksdk.Interfaces.StakListener;
+import android.demo.amitrai.staksdk.Interfaces.StakWeblistener;
 import android.demo.amitrai.staksdk.Modal.KiTAG;
 import android.demo.amitrai.staksdk.StakSearch;
 import android.os.Bundle;
+import android.os.Handler;
 import android.stakbrowser.amitrai.retrofitexample.Adapters.JsonResultAdapter;
 import android.stakbrowser.amitrai.retrofitexample.Modal.DataModal;
 import android.stakbrowser.amitrai.retrofitexample.R;
@@ -13,12 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -40,6 +48,11 @@ public class Splash extends AppCompatActivity{
 
     private RecyclerView recycle_result_list = null;
 
+    private ProgressBar progress = null;
+
+    boolean doubleBackToExitPressedOnce = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +69,7 @@ public class Splash extends AppCompatActivity{
                     adapter = new JsonResultAdapter(Splash.this, resonse);
                     recycle_result_list.setAdapter(adapter);
                     webView.setVisibility(View.GONE);
+                    progress.setVisibility(View.GONE);
                     recycle_result_list.setVisibility(View.VISIBLE);
                     recycle_result_list.setLayoutManager(new LinearLayoutManager(Splash.this));
                     if(resonse.size() >0 && resonse.get(0).getSearchString() != null)
@@ -67,7 +81,20 @@ public class Splash extends AppCompatActivity{
             public void onFailure(String message) {
                 Log.e(TAG, ""+message);
             }
+
+            @Override
+            public void onListeningStart() {
+                progress.setVisibility(View.VISIBLE);
+                Log.e(TAG, "progress start");
+            }
+
+            @Override
+            public void onVoiceDataReceived(String query) {
+                edt_query.setText(query);
+            }
         });
+
+
 
         initWebView();
 
@@ -84,8 +111,6 @@ public class Splash extends AppCompatActivity{
             @Override
             public void onResponse(Response<DataModal> response, Retrofit retrofit) {
                 Log.d(TAG, "" + response);
-
-
             }
 
             @Override
@@ -117,50 +142,85 @@ public class Splash extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    /**
+    /**setO
      * Method will intialize the WebView and set the WebViewClient and WebChromeClient
      */
     private void initWebView() {
+        progress = (ProgressBar) findViewById(R.id.progress);
         webView = (WebView) findViewById(R.id.web_view);
         edt_query = (EditText) findViewById(R.id.edt_query);
         btn_search = (Button) findViewById(R.id.btn_search);
         recycle_result_list = (RecyclerView) findViewById(R.id.recycle_result_list);
 
 
-//        btn_search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String search_query = edt_query.getText().toString().trim();
-//                if (search_query.length() > 0) {
-//                    StakSearch.search(search_query, Splash.this, webView);
-////                    new StakJsonRequester(Splash.this, search_query);
-//                }
-//            }
-//        });
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edt_query.getText() != null && edt_query.getText().toString().trim().length() != 0){
+                    onSearchSubmit();
+                }else{
+                    edt_query.setError("Can not search Empty text");
+                    edt_query.requestFocus();
+                }
+
+            }
+        });
 
 
-//        AddMic.addMic(act, webView);
-//        StakSearch.addMic(act,webView);
+        edt_query.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onSearchSubmit();
+                }
+                return false;
+            }
+        });
+    }
 
-//        webView.loadUrl("http://www.google.co.in");
+
+    private void onSearchSubmit(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(edt_query.getWindowToken(), 0);
+
+        String search_query = edt_query.getText().toString().trim();
+        if (search_query.length() > 0) {
+            progress.setVisibility(View.GONE);
+            recycle_result_list.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            new StakSearch(new StakWeblistener() {
+                @Override
+                public void onProgresStarted() {
+                    recycle_result_list.setVisibility(View.GONE);
+                    webView.setVisibility(View.GONE);
+                    progress.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onProgressFinished() {
+                    progress.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                }
+            }).search(search_query, Splash.this, webView);
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.e(TAG, "on activity result");
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
 
-//        if (requestCode == StakConstants.VOICE_LISTENING_REQUEST_CODE) {
-//
-//            if (data != null) {
-//                String searchQuery = data.getStringExtra("query");
-//                if (searchQuery != null) {
-//                    searchQuery = searchQuery.toLowerCase();
-////                    StakSearch.search(searchQuery, this, webView);
-//                }
-//            }
-//        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
-
-
 }
