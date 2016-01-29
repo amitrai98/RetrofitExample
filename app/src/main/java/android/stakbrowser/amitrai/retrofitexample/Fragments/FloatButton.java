@@ -8,7 +8,6 @@ import android.demo.amitrai.staksdk.StakSearch;
 import android.net.Uri;
 import android.os.Bundle;
 import android.stakbrowser.amitrai.retrofitexample.Adapters.JsonResultAdapter;
-import android.stakbrowser.amitrai.retrofitexample.R;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.stakbrowser.amitrai.retrofitexample.R;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -25,12 +26,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentJsonSearch.OnFragmentInteractionListener} interface
+ * {@link FloatButton.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentJsonSearch#newInstance} factory method to
+ * Use the {@link FloatButton#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentJsonSearch extends Fragment {
+public class FloatButton extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,9 +41,10 @@ public class FragmentJsonSearch extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private OnFragmentInteractionListener mListener;
+
     private Activity context = null;
 
-    private OnFragmentInteractionListener mListener;
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -55,7 +57,7 @@ public class FragmentJsonSearch extends Fragment {
     private EditText edt_query = null;
 
 
-    public FragmentJsonSearch() {
+    public FloatButton() {
         // Required empty public constructor
     }
 
@@ -65,11 +67,11 @@ public class FragmentJsonSearch extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentJsonSearch.
+     * @return A new instance of fragment FloatButton.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentJsonSearch newInstance(String param1, String param2) {
-        FragmentJsonSearch fragment = new FragmentJsonSearch();
+    public static FloatButton newInstance(String param1, String param2) {
+        FloatButton fragment = new FloatButton();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -91,10 +93,9 @@ public class FragmentJsonSearch extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         context = getActivity();
-        View view =inflater.inflate(R.layout.fragment_fragment_json_search, container, false);
-        initview(view);
+        View view = inflater.inflate(R.layout.fragment_float_button, container, false);
+                initview(view);
         return view;
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -136,7 +137,6 @@ public class FragmentJsonSearch extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
     private void initview(View view){
         recycle_result_list = (RecyclerView) view.findViewById(R.id.recycle_result_list);
         progress = (ProgressBar) view.findViewById(R.id.progress);
@@ -149,10 +149,10 @@ public class FragmentJsonSearch extends Fragment {
         StakSearch search = new StakSearch(context, new StakListener() {
             @Override
             public void onJsonReceived(List<KiTAG> resonse) {
+                FloatButton.this.resonse = resonse;
                 Log.e(TAG, "" + resonse);
-                FragmentJsonSearch.this.resonse = resonse;
                 if(resonse != null){
-                    adapter = new JsonResultAdapter(context,  FragmentJsonSearch.this.resonse );
+                    adapter = new JsonResultAdapter(context, FloatButton.this.resonse = resonse);
                     recycle_result_list.setAdapter(adapter);
                     progress.setVisibility(View.GONE);
                     recycle_result_list.setVisibility(View.VISIBLE);
@@ -171,7 +171,7 @@ public class FragmentJsonSearch extends Fragment {
             public void onListeningStart() {
                 progress.setVisibility(View.VISIBLE);
                 Log.e(TAG, "progress start");
-//                FragmentJsonSearch.this.resonse.clear();
+//                resonse.clear();
 //                adapter.notifyDataSetChanged();
             }
 
@@ -182,6 +182,5 @@ public class FragmentJsonSearch extends Fragment {
         });
 
     }
-
 
 }

@@ -34,7 +34,8 @@ public class StakFloatButton extends android.support.design.widget.FloatingActio
 
     @Override
     public void setBackground(Drawable background) {
-        super.setBackground(getResources().getDrawable(R.drawable.mic_image_blue));
+
+        super.setBackground(getResources().getDrawable(R.drawable.mic_image));
     }
 
     @Override

@@ -60,7 +60,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
         stakBrowserSpeechRecognizer.setSpeechListener(this);
         initId();
         initAnimation();
-        enableAnimation(true);
+//        enableAnimation(true);
         startVoiceListening();
     }
 
@@ -135,7 +135,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
         @Override
         public void onClick(View view) {
             if (NetworkConnection.isConnectedToNetwork(VoiceListeningDailogActivity.this)) {
-                enableAnimation(true);
+//                enableAnimation(true);
                 startVoiceListening();
             }
             else{
@@ -148,18 +148,18 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
     }
     /**
      * Enable or Disable Mic Animation based on the boolean value;
-     * @param enableAnimation
+//     * @param enableAnimation
      */
-    private void enableAnimation(boolean enableAnimation){
-        if(enableAnimation) {
-            imRecordImageView.setVisibility(ImageView.VISIBLE);
-            imRecordImageView.startAnimation(animationSet);
-        }
-        else{
-            imRecordImageView.setVisibility(ImageView.INVISIBLE);
-            imRecordImageView.clearAnimation();
-        }
-    }
+//    private void enableAnimation(boolean enableAnimation){
+//        if(enableAnimation) {
+//            imRecordImageView.setVisibility(ImageView.VISIBLE);
+//            imRecordImageView.startAnimation(animationSet);
+//        }
+//        else{
+//            imRecordImageView.setVisibility(ImageView.INVISIBLE);
+//            imRecordImageView.clearAnimation();
+//        }
+//    }
     private void onSearchSubmit(String query){
         //set the query as a result and then finish
         Intent resultIntent=new Intent();
@@ -172,7 +172,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
      * his method will also stop the Mic animation.`
      */
     private void stopVoiceListeningIfEnabled(){
-        enableAnimation(false);
+//        enableAnimation(false);
     }
 
     /**
@@ -180,7 +180,7 @@ public class VoiceListeningDailogActivity extends Activity implements SpeechList
      * This method will also initiate the Mic animation.
      */
     private void startVoiceListening(){
-        enableAnimation(true);
+//        enableAnimation(true);
         stakBrowserSpeechRecognizer.startSpeechEngine();
     }
 

@@ -19,12 +19,18 @@ import java.util.List;
 public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAdapter.NavigationItemHolder> {
 
     private Context context = null;
+    private static NavigationListener listener = null;
+
+    public interface NavigationListener{
+        public void onNavigatorClicked(int position);
+    }
 
     private List<NavigationOptionModal> list_navigation = Collections.emptyList();
 
-    public NavigationItemAdapter(Context context, List<NavigationOptionModal> list_navigation){
+    public NavigationItemAdapter(Context context, List<NavigationOptionModal> list_navigation, NavigationListener listener){
         this.context = context;
         this.list_navigation = list_navigation;
+        NavigationItemAdapter.listener = listener;
     }
 
     @Override
@@ -38,7 +44,9 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
         NavigationOptionModal navigationOptionModal = list_navigation.get(position);
         if(navigationOptionModal != null){
             holder.txt_option_item.setText(navigationOptionModal.getOption_name());
-            holder.img_option_item.setImageResource(navigationOptionModal.getOption_id());
+
+            if(navigationOptionModal.getOption_id() != null)
+                holder.img_option_item.setImageDrawable(navigationOptionModal.getOption_id());
         }
     }
 
@@ -56,6 +64,15 @@ public class NavigationItemAdapter extends RecyclerView.Adapter<NavigationItemAd
            super(itemView);
             txt_option_item = (TextView) itemView.findViewById(R.id.txt_option);
             img_option_item = (ImageView) itemView.findViewById(R.id.img_option);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onNavigatorClicked(getAdapterPosition());
+                }
+            });
        }
+
+
    }
 }

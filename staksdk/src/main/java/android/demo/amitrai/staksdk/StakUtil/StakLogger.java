@@ -10,7 +10,7 @@ public class StakLogger {
     private static boolean isLoggerEnabled=true;
     public static void log(String tag,String message){
         if(isLoggerEnabled){
-            Log.d(tag, message);
+            Log.e(tag, message);
         }
     }
 }

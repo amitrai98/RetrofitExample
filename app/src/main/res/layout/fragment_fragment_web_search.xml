@@ -13,6 +13,8 @@
 
         <EditText
             android:id="@+id/edt_query"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".7"/>
